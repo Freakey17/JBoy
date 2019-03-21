@@ -57,15 +57,17 @@ public class DebuggerView extends javax.swing.JFrame
         {
             // afficahge m�moire
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(new UnsignedByte(b).toString());
             aLine += " " + new UnsignedByte(b).toString();
+            stringBuilder.append(aLine);
             if (i % 16 == 0)
             {
-                stringBuilder.append(ByteUtil.toHex(adress) + ":" + stringBuilder);
-                aLine = ByteUtil.toHex(adress) + ":" + aLine;
-                memoryModel.addElement(stringBuilder);
+                stringBuilder.insert(0, ByteUtil.toHex(adress) + ":");
+                stringBuilder.append(aLine);
+                // aLine = ByteUtil.toHex(adress) + ":" + aLine;
+                memoryModel.addElement(stringBuilder.toString());
                 adress += 16;
-                aLine = "";
+                stringBuilder.delete(0, stringBuilder.length());
+                //aLine = "";
             }
 
             // affichage instructions
