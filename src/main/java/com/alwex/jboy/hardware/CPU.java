@@ -24,14 +24,14 @@ public class CPU extends AbstractHardware
         A, B, C, D, E, F, H, L, AF, HL, BC, DE, SP, F_C, F_H, F_N, F_Z, n, nn, _HL_;
     }
     // registres spéciaux valeurs en mémoire
-    public int P1 = 0xFF00, // joypad infos and system type RW
-            SB = 0xFF01, // serial transfers data RW
-            SC = 0xFF02, // SIO control RW
-            DIV = 0xFF04, // divider regsiter RW
-            TIMA = 0xFF05, // timer counter RW
-            TMA = 0xFF06, // timer modulo RW
-            TAC = 0xFF7, // timer control RW
-            IF = 0xFF0F, // interupt flag RW
+    public int P1 = 0xFF00; // joypad infos and system type RW
+    public int SB = 0xFF01; // serial transfers data RW
+    public int SC = 0xFF02; // SIO control RW
+    public int DIV = 0xFF04; // divider regsiter RW
+    public int TIMA = 0xFF05; // timer counter RW
+    public int TMA = 0xFF06; // timer modulo RW
+    public int TAC = 0xFF7; // timer control RW
+    public int IF = 0xFF0F; // interupt flag RW
             /*
             NR10 = 0xFF10, // sound mode 1 register RW
             NR11 = 0xFF11, // sound mode 1 register wave pattern duty RW
@@ -40,19 +40,22 @@ public class CPU extends AbstractHardware
             NR14 = 0xFF14, // sound mode 1 register wave pattern duty RW
             NR21 = 0xFF16, // sound mode 1 register wave pattern duty RW
              */
-            LCDC = 0xFF40, // LCD control RW
-            STAT = 0xFF41, // LCD status RW
-            SCY = 0xFF42, // BG scroll y RW
-            SCX = 0xFF43; // BG scroll x RW
-    protected static Logger logger;
+    public int LCDC = 0xFF40; // LCD control RW
+    public int STAT = 0xFF41; // LCD status RW
+    public int SCY = 0xFF42; // BG scroll y RW
+    public int SCX = 0xFF43; // BG scroll x RW
+    protected Logger logger;
     private static CPU instance;
-    public final int F_C = 4, F_H = 5, F_N = 6, F_Z = 7;
+    public static final int F_C = 4;
+    public static final int F_H = 5;
+    public static final int F_N = 6;
+    public static final int F_Z = 7;
     // registres du processeur
-    public byte A = 0x00,
-            B,
-            C,
-            D,
-            E,
+    public byte A = 0x00;
+    public byte B;
+    public byte C;
+    public byte D;
+    public byte E;
             // flag register 7 6 5 4 3 2 1 0
             //               Z N H C 0 0 0 0
             // * Z Zero flag if operation result match is
@@ -65,30 +68,30 @@ public class CPU extends AbstractHardware
             // * Carry flag, is set if a carry occured from the
             // last math operation or if register A is the
             // smaller value when executing the CP instruction
-            F = (byte) 0xB0,
-            H,
-            L;
+    public byte F = (byte) 0xB0;
+    public byte H;
+    public byte L;
     // Stack Pointer
-    public short SP = (short) 0xFFFE,
+    public short SP = (short) 0xFFFE;
             // Program Counter
             // initialized to 0x0100
             // first instruction in rom location
-            PC = 0x0100;
+    public short PC = (short) 0x0100;
     public byte[] rom;
     // pourquoi + 1 ?
     public byte[] memory = new byte[0xFFFF + 1];
     // découpage de la mémoire
-    public int memStart_16kBRomBank0 = 0x0000,
-            memStart_16kBSwitchableRomBank = 0x4000,
-            memStart_8kBVideoRam = 0x8000,
-            memStart_8kBSwitcableRamBank = 0xA000,
-            memStart_8kBInternalRam = 0xC000,
-            memStart_8kBEchoInternalRam = 0xE000,
-            memStart_spriteAttributeMemory = 0xFE00,
-            memStart_emptyButNotUsableForIO1 = 0xFEA0,
-            memStart_IOPorts = 0xFF00,
-            memStart_emptyButNotUsableForIO2 = 0xFF80,
-            memStart_interruptEnableRegister = 0xFFFF;
+    public int memStart_16kBRomBank0 = 0x0000;
+    public int memStart_16kBSwitchableRomBank = 0x4000;
+    public int memStart_8kBVideoRam = 0x8000;
+    public int memStart_8kBSwitcableRamBank = 0xA000;
+    public int memStart_8kBInternalRam = 0xC000;
+    public int memStart_8kBEchoInternalRam = 0xE000;
+    public int memStart_spriteAttributeMemory = 0xFE00;
+    public int memStart_emptyButNotUsableForIO1 = 0xFEA0;
+    public int memStart_IOPorts = 0xFF00;
+    public int memStart_emptyButNotUsableForIO2 = 0xFF80;
+    public int memStart_interruptEnableRegister = 0xFFFF;
 
     public static CPU getInstance()
     {
@@ -160,21 +163,9 @@ public class CPU extends AbstractHardware
         System.arraycopy(rom, 0, this.memory, 0, rom.length);
     }
 
-    /**
-     * process des opcodes de la rom
-     * http://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
-     *
-     * d8  => immediate 8bits values
-     * d16 => immediate 16bits values
-     *
-     * @param opCode
-     */
-    public void processOpCode()
-    {
-        byte opCode = this.getByteAt(PC);
-        int addr;
-        byte[] splittedShort;
 
+    public void loggOpCode(){
+        byte opCode = this.getByteAt(PC);
         String label = "";
 
         logger.info("=======================================");
@@ -191,7 +182,20 @@ public class CPU extends AbstractHardware
                 + " D=" + Debug.toHex(D) + " E=" + Debug.toHex(E)
                 + " HL=" + Debug.toHex(H) + "" + Debug.toHex(L)
                 + " SP=" + Debug.toHex(SP));
+        processOpCode(opCode, label);
+    }
 
+    /**
+     * process des opcodes de la rom
+     * http://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+     *
+     * d8  => immediate 8bits values
+     * d16 => immediate 16bits values
+     *
+     * @param opCode
+     */
+    public void processOpCode(byte opCode, String label)
+    {
         switch (opCode & 0xFF)
         {
 
@@ -1801,22 +1805,6 @@ public class CPU extends AbstractHardware
             case 0xFE:
                 label = "CP d8  2:8  Z 1 H C";
                 this.CP(Register.n);
-                /*
-                byte result = (byte) ((A - memory[PC]) & 0xff);
-                if (result == 0)
-                {
-                setF(F_Z, 1);
-                }
-                setF(F_N, 1);
-                setF(F_H, 1); // FIXME set if no borrow from bit 4
-                if (result < 0)
-                {
-                setF(F_C, 1);
-                }
-
-                PC += 2;
-                 * 
-                 */
                 break;
 
             //RST 38H  1:16  - - - -
@@ -1908,7 +1896,7 @@ public class CPU extends AbstractHardware
                 value = L;
                 break;
             default:
-                System.out.println("erreur pas géré le ld");
+                logger.error("erreur pas géré le ld");
         }
 
         this.setByteAt(ByteUtil.combine(H, L), value);
@@ -1998,6 +1986,8 @@ public class CPU extends AbstractHardware
             case _HL_:
                 memory[ByteUtil.combine(H, L)]--;
                 break;
+            default:
+
         }
 
         if (result == 0)
@@ -2023,11 +2013,12 @@ public class CPU extends AbstractHardware
 
     private void ADD_HL_XX(Register register)
     {
-        byte a1 = 0, b1 = 0, a2 = 0, b2 = 0;
+        byte a1 = 0;
+        byte a2 = 0;
+        byte b2 = 0;
         int HLValue = ByteUtil.combine(H, L);
 
         a1 = H;
-        b1 = L;
 
         switch (register)
         {
@@ -2046,6 +2037,8 @@ public class CPU extends AbstractHardware
                 int HLValue2 = ByteUtil.combine(H, L);
                 HLValue += HLValue2;
                 break;
+            default:
+
         }
 
         H = (byte) (HLValue >> 8 & 0xFF);
@@ -2150,6 +2143,8 @@ public class CPU extends AbstractHardware
                 memory[ByteUtil.combine(H, L)]++;
                 doubleRegister = true;
                 break;
+            default:
+
         }
 
         if (!doubleRegister)
@@ -2176,7 +2171,6 @@ public class CPU extends AbstractHardware
         byte theValueBefore = 0x00;
         byte theValue = 0x00;
         byte theResult = 0x00;
-        boolean halfCarry = false;
 
         switch (register2)
         {
@@ -2254,7 +2248,7 @@ public class CPU extends AbstractHardware
 
         if (this.needHalfCarry(theValueBefore, theResult))
         {
-            halfCarry = true;
+            boolean halfCarry = true;
         }
 
         setF(F_Z, 0);
@@ -2394,6 +2388,7 @@ public class CPU extends AbstractHardware
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
                 break;
+            default:
         }
 
         A -= theValue;
@@ -2458,6 +2453,7 @@ public class CPU extends AbstractHardware
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
                 break;
+            default:
         }
 
         A -= theValue;
@@ -2522,6 +2518,7 @@ public class CPU extends AbstractHardware
             case n:
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
+            default:
         }
 
         A &= theValue;
@@ -2576,6 +2573,7 @@ public class CPU extends AbstractHardware
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
                 break;
+            default:
         }
 
         A = (byte) ((A ^ theValue) & 0xff);
@@ -2629,6 +2627,7 @@ public class CPU extends AbstractHardware
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
                 break;
+            default:
         }
 
         A = (byte) ((A | theValue) & 0xff);
@@ -2682,6 +2681,7 @@ public class CPU extends AbstractHardware
                 theValue = this.getByteAt(PC + 1);
                 PC += 1;
                 break;
+            default:
         }
 
         byte theResult = (byte) (A - theValue);
@@ -2712,7 +2712,6 @@ public class CPU extends AbstractHardware
 
     public void POP(Register register)
     {
-        byte[] splittedShort = ByteUtil.split(SP);
 
         switch (register)
         {
@@ -2732,6 +2731,7 @@ public class CPU extends AbstractHardware
                 D = this.getByteAt(SP + 1);
                 E = this.getByteAt(SP);
                 break;
+            default:
         }
         
         PC += 1;

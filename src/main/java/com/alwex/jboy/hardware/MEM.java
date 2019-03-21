@@ -20,7 +20,7 @@ public class MEM extends AbstractHardware
 
     public MEM()
     {
-        logger = Logger.getLogger(this.getClass());
+        Logger.getLogger(this.getClass());
     }
 
     public static MEM getInstance()
@@ -44,9 +44,11 @@ public class MEM extends AbstractHardware
         }
         catch (FileNotFoundException ex)
         {
+            ex.printStackTrace();
         }
         catch (IOException ex)
         {
+            ex.printStackTrace();
         }
 
         return bytes;
@@ -60,14 +62,15 @@ public class MEM extends AbstractHardware
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static byte[] loadByteFromFile(File theFile) throws FileNotFoundException, IOException
+    public static byte[] loadByteFromFile(File theFile) throws IOException
     {
         InputStream input = new FileInputStream(theFile);
         long length = theFile.length();
 
         byte[] bytes = new byte[(int) length];
 
-        int offset = 0, numread = 0;
+        int offset = 0;
+        int numread = 0;
         while (offset < bytes.length)
         {
             numread = input.read(bytes, offset, bytes.length - offset);
