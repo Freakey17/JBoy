@@ -282,7 +282,7 @@ public class Debugger
 
             //DEC HL  1:8  - - - -
             case 0x2B:
-                label += "DEC HL  1:8  - - - -";
+                label += "DEC HL  1:8  - - - - ";
                 PC += 1;
                 break;
 
