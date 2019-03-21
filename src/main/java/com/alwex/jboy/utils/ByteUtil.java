@@ -1,6 +1,6 @@
 package com.alwex.jboy.utils;
 
-import com.sun.swing.internal.plaf.basic.resources.basic;
+
 
 /**
  *
@@ -8,6 +8,10 @@ import com.sun.swing.internal.plaf.basic.resources.basic;
  */
 public class ByteUtil
 {
+    private ByteUtil(){
+        throw new IllegalStateException("Utility Class");
+    }
+
     public static int UByte(byte value)
     {
         return value & 0xff;
@@ -31,20 +35,27 @@ public class ByteUtil
     public static String toHex(byte value)
     {
         String out = Integer.toHexString(UByte(value)).toUpperCase();
-        while (out.length() < 2)
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(out);
+        while (stringBuilder.length() < 2)
         {
-            out = "0" + out;
+            stringBuilder.append("0" + out);
+            //out = "0" + out;
         }
-        return out;
+        return stringBuilder.toString();
     }
 
     public static String toHex(short value)
     {
         String out = Integer.toHexString(UShort(value)).toUpperCase();
-        while (out.length() < 4)
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(out);
+        while (stringBuilder.length() < 4)
         {
-            out = "0" + out;
+            stringBuilder.insert(0, "0");
+            //out = "0" + out;
         }
+        out = stringBuilder.toString();
         return out;
     }
 
@@ -67,8 +78,7 @@ public class ByteUtil
      */
     public static int combine(byte a, byte b)
     {
-        int result = ((((a << 8) & 0xffff | b & 0xff) & 0x0000ffff) & 0xffff);
-        return result;
+        return ((((a << 8) & 0xffff | b & 0xff) & 0x0000ffff) & 0xffff);
     }
 
     public static byte[] split(int aValue)

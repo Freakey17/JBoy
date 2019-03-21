@@ -28,23 +28,28 @@ public class UnsignedByte
 
     public void bitwise()
     {
-        
+        /*
+        * Ist leer, aber keine Ahnung wieso
+         */
     }
 
     public int combine(byte a, byte b)
     {
-        int result = ((((a << 8) & 0xffff | b & 0xff) & 0x0000ffff) & 0xffff);
-        return result;
+        return  ((((a << 8) & 0xffff | b & 0xff) & 0x0000ffff) & 0xffff);
     }
 
     @Override
     public String toString()
     {
         String out = Integer.toHexString(this.value & 0xff).toUpperCase();
-        while (out.length() < 2)
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(out);
+        while (stringBuilder.length() < 2)
         {
-            out = "0" + out;
+            stringBuilder.insert(0, "0");
+            //out = "0" + out;
         }
+        out = stringBuilder.toString();
         return out;
     }
 
