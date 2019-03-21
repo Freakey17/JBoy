@@ -4,7 +4,6 @@
 
 package com.alwex.jboy;
 
-import com.alwex.jboy.utils.Debugger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;

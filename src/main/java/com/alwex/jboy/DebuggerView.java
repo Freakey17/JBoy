@@ -10,7 +10,6 @@ import com.alwex.jboy.hardware.MEM;
 import com.alwex.jboy.utils.ByteUtil;
 import com.alwex.jboy.utils.Debugger;
 import com.alwex.jboy.utils.UnsignedByte;
-import java.awt.event.KeyEvent;
 import javax.swing.DefaultListModel;
 
 /**
@@ -20,8 +19,7 @@ import javax.swing.DefaultListModel;
 public class DebuggerView extends javax.swing.JFrame
 {
 
-    private CPU theCpu;
-    private Debugger theDebugger;
+    private transient CPU theCpu;
 
     /** Creates new form DebuggerView */
     public DebuggerView()
@@ -45,25 +43,27 @@ public class DebuggerView extends javax.swing.JFrame
 
     public void loadValues()
     {
-        theDebugger = new Debugger(theCpu.memory);
+        Debugger theDebugger = new Debugger(theCpu.memory);
 
         DefaultListModel memoryModel = new DefaultListModel();
         memoryList.setModel(memoryModel);
 
         DefaultListModel opCodeModel = new DefaultListModel();
         opCodeList.setModel(opCodeModel);
-
+        String aLine = "";
         int i = 1;
         short adress = 0;
-        String aLine = "";
         for (byte b : theCpu.memory)
         {
-            // afficahge mémoire
+            // afficahge mï¿½moire
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(new UnsignedByte(b).toString());
             aLine += " " + new UnsignedByte(b).toString();
             if (i % 16 == 0)
             {
+                stringBuilder.append(ByteUtil.toHex(adress) + ":" + stringBuilder);
                 aLine = ByteUtil.toHex(adress) + ":" + aLine;
-                memoryModel.addElement(aLine);
+                memoryModel.addElement(stringBuilder);
                 adress += 16;
                 aLine = "";
             }
@@ -472,7 +472,7 @@ public class DebuggerView extends javax.swing.JFrame
     /**
      * on avance d'un pas dans l'execution de la rom
      * 
-     * @param evt
+     *
      */
     private void stepButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stepButtonActionPerformed
     {//GEN-HEADEREND:event_stepButtonActionPerformed
@@ -484,14 +484,14 @@ public class DebuggerView extends javax.swing.JFrame
 
         for (int i = 0; i < steps; i++)
         {
-            theCpu.processOpCode();
+            theCpu.loggOpCode();
             updateValues();
         }
     }//GEN-LAST:event_stepButtonActionPerformed
 
     /**
      * 
-     * @param evt 
+     * @param evt
      */
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_resetButtonActionPerformed
     {//GEN-HEADEREND:event_resetButtonActionPerformed
@@ -500,11 +500,11 @@ public class DebuggerView extends javax.swing.JFrame
     }//GEN-LAST:event_resetButtonActionPerformed
 
 private void HLTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HLTextfieldActionPerformed
-// TODO add your handling code here:
+
 }//GEN-LAST:event_HLTextfieldActionPerformed
 
 private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-// TODO add your handling code here:
+
     int runTo = 0;
     if (!"".equals(this.runTextfield.getText()))
     {
@@ -517,7 +517,7 @@ private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         while (theCpu.PC != runTo)
         {
             beforePC = theCpu.PC;
-            theCpu.processOpCode();
+            theCpu.loggOpCode();
             updateValues();
             if (beforePC == theCpu.PC)
             {
