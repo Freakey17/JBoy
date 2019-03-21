@@ -2,6 +2,7 @@ package com.alwex.jboy.hardware;
 
 import com.alwex.jboy.utils.ByteUtil;
 import com.alwex.jboy.utils.Debug;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.apache.log4j.Logger;
 
 /**
@@ -12,7 +13,7 @@ import org.apache.log4j.Logger;
  * http://www.zophar.net/fileuploads/2/10810irctp/z80_faq2.html
  * http://nocash.emubase.de/pandocs.htm#videodisplay
  */
-public class CPU extends AbstractHardware
+public class CPU implements AbstractHardware
 {
 
     /**
@@ -198,8 +199,6 @@ public class CPU extends AbstractHardware
     {
         switch (opCode & 0xFF)
         {
-
-
             // NOP  1:4  - - - -
             case 0x00:
                 label = "NOP  1:4  - - - -";
@@ -1542,6 +1541,15 @@ public class CPU extends AbstractHardware
                 // FIXME
                 label = "PREFIX CB  1:4  - - - -";
                 PC++;
+                if (opCode == 0x37){
+                    A = (byte) (((A >> 4) & 0x0F) | ((A << 4) & 0xF0));
+                    if (A == 0)
+                    {
+                        setF(F_Z, 1);
+                    }
+                    PC++;
+                }
+                /*
                 switch (memory[PC] & 0xFF)
                 {
                     case 0x37: // SWAP A
@@ -1552,8 +1560,10 @@ public class CPU extends AbstractHardware
                         }
                         PC++;
                         break;
+                    default:
                 }
                 break;
+                */
 
             //CALL Z,a16  3:24/12  - - - -
             case 0xCC:
@@ -2280,8 +2290,7 @@ public class CPU extends AbstractHardware
     {
         byte theValueBefore = A;
         byte theValue = 0x00;
-        byte theResult = 0x00;
-        boolean halfCarry = false;
+        byte theResult;
 
         switch (register)
         {
@@ -2321,10 +2330,12 @@ public class CPU extends AbstractHardware
 
         theResult = A;
 
+        /*
         if (this.needHalfCarry(theValueBefore, theResult))
         {
             halfCarry = true;
         }
+        */
 
         setF(F_Z, 0);
         if (theResult == 0)

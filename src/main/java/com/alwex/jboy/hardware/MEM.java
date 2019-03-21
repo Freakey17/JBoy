@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  *
  * @author Alex
  */
-public class MEM extends AbstractHardware
+public class MEM implements AbstractHardware
 {
 
     protected static Logger logger;

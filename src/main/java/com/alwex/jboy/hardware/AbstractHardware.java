@@ -4,6 +4,6 @@ package com.alwex.jboy.hardware;
  *
  * @author Alex
  */
-public abstract class AbstractHardware {
+public interface AbstractHardware {
     
 }
