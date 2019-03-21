@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
  */
 public class Debug
 {
+
+
     protected static Logger logger;
 
     public static String toHex(short value)
@@ -18,7 +20,6 @@ public class Debug
         while (stringBuilder.length() < 4)
         {
             stringBuilder.insert(0, "0");
-            //out = "0" + out;
         }
         out = stringBuilder.toString();
         return out;
@@ -32,7 +33,6 @@ public class Debug
         while (stringBuilder.length() < 2)
         {
             stringBuilder.insert(0, "0");
-            //out = "0" + out;
         }
         out = stringBuilder.toString();
         return out;
@@ -46,7 +46,6 @@ public class Debug
         while (stringBuilder.length() < 8)
         {
             stringBuilder.insert(0, "0");
-            //out = "0" + out;
         }
         out = stringBuilder.toString();
         return out;

@@ -40,7 +40,6 @@ public class ByteUtil
         while (stringBuilder.length() < 2)
         {
             stringBuilder.append("0" + out);
-            //out = "0" + out;
         }
         return stringBuilder.toString();
     }
@@ -53,7 +52,7 @@ public class ByteUtil
         while (stringBuilder.length() < 4)
         {
             stringBuilder.insert(0, "0");
-            //out = "0" + out;
+
         }
         out = stringBuilder.toString();
         return out;

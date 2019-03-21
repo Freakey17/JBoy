@@ -47,7 +47,6 @@ public class UnsignedByte
         while (stringBuilder.length() < 2)
         {
             stringBuilder.insert(0, "0");
-            //out = "0" + out;
         }
         out = stringBuilder.toString();
         return out;

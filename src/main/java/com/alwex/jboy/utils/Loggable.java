@@ -1,11 +1,7 @@
 package com.alwex.jboy.utils;
 
-import org.apache.log4j.Logger;
-
 /**
- *
- * @author Alex
+ * Created by Matze on 21.03.2019.
  */
-public class Loggable
-{
+public interface Loggable {
 }

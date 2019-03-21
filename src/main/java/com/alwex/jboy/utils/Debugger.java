@@ -130,7 +130,7 @@ public class Debugger
             //LD (DE),A  1:8  - - - -
             case 0x12:
                 label += "LD (DE),A  1:8  - - - -";
-                ;
+
                 break;
 
             //INC DE  1:8  - - - -
