@@ -10,7 +10,9 @@ import com.alwex.jboy.hardware.MEM;
 import com.alwex.jboy.utils.ByteUtil;
 import com.alwex.jboy.utils.Debugger;
 import com.alwex.jboy.utils.UnsignedByte;
-import javax.swing.DefaultListModel;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -63,11 +65,9 @@ public class DebuggerView extends javax.swing.JFrame
             {
                 stringBuilder.insert(0, ByteUtil.toHex(adress) + ":");
                 stringBuilder.append(aLine);
-                // aLine = ByteUtil.toHex(adress) + ":" + aLine;
                 memoryModel.addElement(stringBuilder.toString());
                 adress += 16;
                 stringBuilder.delete(0, stringBuilder.length());
-                //aLine = "";
             }
 
             // affichage instructions
@@ -111,26 +111,26 @@ public class DebuggerView extends javax.swing.JFrame
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        opCodesScrollPane = new javax.swing.JScrollPane();
+        JScrollPane opCodesScrollPane = new javax.swing.JScrollPane();
         opCodeList = new javax.swing.JList();
-        memoryScrollPane = new javax.swing.JScrollPane();
+        JScrollPane memoryScrollPane = new javax.swing.JScrollPane();
         memoryList = new javax.swing.JList();
-        runButton = new javax.swing.JButton();
-        stepButton = new javax.swing.JButton();
-        pauseButton = new javax.swing.JToggleButton();
-        resetButton = new javax.swing.JButton();
-        RegistersPanel = new java.awt.Panel();
-        ALabel = new javax.swing.JLabel();
+        JButton runButton = new javax.swing.JButton();
+        JButton stepButton = new javax.swing.JButton();
+        JToggleButton pauseButton = new javax.swing.JToggleButton();
+        JButton resetButton = new javax.swing.JButton();
+        Panel RegistersPanel = new java.awt.Panel();
+        JLabel ALabel = new javax.swing.JLabel();
         ATextfield = new javax.swing.JTextField();
-        FLabel = new javax.swing.JLabel();
-        BLabel = new javax.swing.JLabel();
+        JLabel FLabel = new javax.swing.JLabel();
+        JLabel BLabel = new javax.swing.JLabel();
         PCTextfield = new javax.swing.JTextField();
         BTextfield = new javax.swing.JTextField();
-        CLabel = new javax.swing.JLabel();
-        DLabel = new javax.swing.JLabel();
+        JLabel CLabel = new javax.swing.JLabel();
+        JLabel DLabel = new javax.swing.JLabel();
         DTextfield = new javax.swing.JTextField();
-        ELabel = new javax.swing.JLabel();
-        PCLabel = new javax.swing.JLabel();
+        JLabel ELabel = new javax.swing.JLabel();
+        JLabel PCLabel = new javax.swing.JLabel();
         FTextfield = new javax.swing.JTextField();
         CTextfield = new javax.swing.JTextField();
         FZTextfield = new javax.swing.JTextField();
@@ -138,14 +138,14 @@ public class DebuggerView extends javax.swing.JFrame
         FNTextfield = new javax.swing.JTextField();
         FCTextfield = new javax.swing.JTextField();
         FHTextfield = new javax.swing.JTextField();
-        FZLabel = new javax.swing.JLabel();
-        FNLabel = new javax.swing.JLabel();
-        FHLabel = new javax.swing.JLabel();
-        FCLabel = new javax.swing.JLabel();
-        HLLabel = new javax.swing.JLabel();
+        JLabel FZLabel = new javax.swing.JLabel();
+        JLabel FNLabel = new javax.swing.JLabel();
+        JLabel FHLabel = new javax.swing.JLabel();
+        JLabel FCLabel = new javax.swing.JLabel();
+        JLabel HLLabel = new javax.swing.JLabel();
         HLTextfield = new javax.swing.JTextField();
         SPTextfield = new javax.swing.JTextField();
-        SPLabel = new javax.swing.JLabel();
+        JLabel SPLabel = new javax.swing.JLabel();
         stepTextfield = new javax.swing.JTextField();
         runTextfield = new javax.swing.JTextField();
 
@@ -169,7 +169,7 @@ public class DebuggerView extends javax.swing.JFrame
         runButton.setName("runButton"); // NOI18N
         runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runButtonActionPerformed(evt);
+                runButtonActionPerformed();
             }
         });
 
@@ -177,7 +177,7 @@ public class DebuggerView extends javax.swing.JFrame
         stepButton.setName("stepButton"); // NOI18N
         stepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stepButtonActionPerformed(evt);
+                stepButtonActionPerformed();
             }
         });
 
@@ -188,7 +188,7 @@ public class DebuggerView extends javax.swing.JFrame
         resetButton.setName("resetButton"); // NOI18N
         resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetButtonActionPerformed(evt);
+                resetButtonActionPerformed();
             }
         });
 
@@ -392,7 +392,7 @@ public class DebuggerView extends javax.swing.JFrame
         HLTextfield.setName("HLTextfield"); // NOI18N
         HLTextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HLTextfieldActionPerformed(evt);
+                HLTextfieldActionPerformed();
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -476,7 +476,7 @@ public class DebuggerView extends javax.swing.JFrame
      * 
      *
      */
-    private void stepButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stepButtonActionPerformed
+    private void stepButtonActionPerformed()//GEN-FIRST:event_stepButtonActionPerformed
     {//GEN-HEADEREND:event_stepButtonActionPerformed
         int steps = 1;
         if (!"".equals(this.stepTextfield.getText()))
@@ -493,19 +493,19 @@ public class DebuggerView extends javax.swing.JFrame
 
     /**
      * 
-     * @param evt
+     *
      */
-    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_resetButtonActionPerformed
+    private void resetButtonActionPerformed()//GEN-FIRST:event_resetButtonActionPerformed
     {//GEN-HEADEREND:event_resetButtonActionPerformed
         theCpu.init();
         updateValues();
     }//GEN-LAST:event_resetButtonActionPerformed
 
-private void HLTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HLTextfieldActionPerformed
+private void HLTextfieldActionPerformed() {//GEN-FIRST:event_HLTextfieldActionPerformed
 
 }//GEN-LAST:event_HLTextfieldActionPerformed
 
-private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+private void runButtonActionPerformed() {//GEN-FIRST:event_runButtonActionPerformed
 
     int runTo = 0;
     if (!"".equals(this.runTextfield.getText()))
@@ -580,42 +580,44 @@ private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ALabel;
-    private javax.swing.JTextField ATextfield;
+    /*private javax.swing.JLabel ALabel;
     private javax.swing.JLabel BLabel;
-    private javax.swing.JTextField BTextfield;
     private javax.swing.JLabel CLabel;
-    private javax.swing.JTextField CTextfield;
     private javax.swing.JLabel DLabel;
-    private javax.swing.JTextField DTextfield;
     private javax.swing.JLabel ELabel;
-    private javax.swing.JTextField ETextfield;
     private javax.swing.JLabel FCLabel;
-    private javax.swing.JTextField FCTextfield;
     private javax.swing.JLabel FHLabel;
-    private javax.swing.JTextField FHTextfield;
     private javax.swing.JLabel FLabel;
     private javax.swing.JLabel FNLabel;
-    private javax.swing.JTextField FNTextfield;
-    private javax.swing.JTextField FTextfield;
     private javax.swing.JLabel FZLabel;
-    private javax.swing.JTextField FZTextfield;
     private javax.swing.JLabel HLLabel;
-    private javax.swing.JTextField HLTextfield;
     private javax.swing.JLabel PCLabel;
-    private javax.swing.JTextField PCTextfield;
     private java.awt.Panel RegistersPanel;
     private javax.swing.JLabel SPLabel;
-    private javax.swing.JTextField SPTextfield;
-    private javax.swing.JList memoryList;
     private javax.swing.JScrollPane memoryScrollPane;
-    private javax.swing.JList opCodeList;
     private javax.swing.JScrollPane opCodesScrollPane;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton runButton;
-    private javax.swing.JTextField runTextfield;
     private javax.swing.JButton stepButton;
+    */
+    private javax.swing.JTextField ATextfield;
+    private javax.swing.JTextField BTextfield;
+    private javax.swing.JTextField CTextfield;
+    private javax.swing.JTextField DTextfield;
+    private javax.swing.JTextField ETextfield;
+    private javax.swing.JTextField FCTextfield;
+    private javax.swing.JTextField FHTextfield;
+    private javax.swing.JTextField FNTextfield;
+    private javax.swing.JTextField FTextfield;
+    private javax.swing.JTextField FZTextfield;
+    private javax.swing.JTextField HLTextfield;
+    private javax.swing.JTextField PCTextfield;
+    private javax.swing.JTextField SPTextfield;
+    private javax.swing.JList memoryList;
+    private javax.swing.JList opCodeList;
+    private javax.swing.JTextField runTextfield;
     private javax.swing.JTextField stepTextfield;
     // End of variables declaration//GEN-END:variables
+
 }
