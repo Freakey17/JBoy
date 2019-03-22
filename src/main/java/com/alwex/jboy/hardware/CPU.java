@@ -195,7 +195,7 @@ public class CPU implements AbstractHardware
      *
      * @param opCode
      */
-    public void processOpCode(byte opCode, String label)
+    public String processOpCode(byte opCode, String label)
     {
         switch (opCode & 0xFF)
         {
@@ -1811,6 +1811,7 @@ public class CPU implements AbstractHardware
             default:
                 logger.error("opcode inconnus " + Debug.toHex(opCode));
         }
+        return label;
     }
 
     /**
