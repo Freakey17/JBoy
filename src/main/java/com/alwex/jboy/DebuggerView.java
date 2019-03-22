@@ -21,12 +21,12 @@ import java.awt.*;
 public class DebuggerView extends javax.swing.JFrame
 {
 
-    private static transient CPU theCpu;
+    private transient CPU theCpu;
 
     /** Creates new form DebuggerView */
     public DebuggerView()
     {
-        theCpu = new CPU();
+        new CPU();
         MEM theMemory = new MEM();
 
         theCpu.init();
@@ -52,19 +52,17 @@ public class DebuggerView extends javax.swing.JFrame
 
         DefaultListModel opCodeModel = new DefaultListModel();
         opCodeList.setModel(opCodeModel);
-        //String aLine = "";
+
         int i = 1;
         short adress = 0;
         for (byte b : theCpu.memory)
         {
             // afficahge m�moire
             StringBuilder stringBuilder = new StringBuilder();
-            //aLine += " " + new UnsignedByte(b).toString();
             stringBuilder.append(new UnsignedByte(b).toString());
             if (i % 16 == 0)
             {
                 stringBuilder.insert(0, ByteUtil.toHex(adress) + ":");
-                //aLine = ByteUtil.toHex(adress) + ":" + aLine;
                 memoryModel.addElement(stringBuilder.toString());
                 adress += 16;
                 stringBuilder.delete(0, stringBuilder.length());

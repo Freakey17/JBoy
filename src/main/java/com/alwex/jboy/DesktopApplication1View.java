@@ -204,13 +204,9 @@ public class DesktopApplication1View extends FrameView {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    //private javax.swing.JMenuItem jMenuItem1;
-    //private javax.swing.JPanel mainPanel;
-    //private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
-    //private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;
