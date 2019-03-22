@@ -17,5 +17,8 @@ public class GPU implements AbstractHardware
 
     public void drawSprites()
     {
+        /*
+        * Hier soll wohl noch was hin
+         */
     }
 }

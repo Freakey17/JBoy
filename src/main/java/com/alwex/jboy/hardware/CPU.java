@@ -1549,21 +1549,7 @@ public class CPU implements AbstractHardware
                     }
                     PC++;
                 }
-                /*
-                switch (memory[PC] & 0xFF)
-                {
-                    case 0x37: // SWAP A
-                        A = (byte) (((A >> 4) & 0x0F) | ((A << 4) & 0xF0));
-                        if (A == 0)
-                        {
-                            setF(F_Z, 1);
-                        }
-                        PC++;
-                        break;
-                    default:
-                }
                 break;
-                */
 
             //CALL Z,a16  3:24/12  - - - -
             case 0xCC:
@@ -2256,10 +2242,6 @@ public class CPU implements AbstractHardware
             default:
         }
 
-        if (this.needHalfCarry(theValueBefore, theResult))
-        {
-            boolean halfCarry = true;
-        }
 
         setF(F_Z, 0);
         if (theResult == 0)
@@ -2330,12 +2312,6 @@ public class CPU implements AbstractHardware
 
         theResult = A;
 
-        /*
-        if (this.needHalfCarry(theValueBefore, theResult))
-        {
-            halfCarry = true;
-        }
-        */
 
         setF(F_Z, 0);
         if (theResult == 0)
